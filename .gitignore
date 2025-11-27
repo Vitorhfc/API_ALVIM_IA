@@ -1,0 +1,26 @@
+# Arquivos e pastas do Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build e binários
+bin/
+obj/
+Debug/
+Release/
+
+# Logs e cache
+*.log
+*.cache
+*.pdb
+*.dbmdl
+
+# Configurações temporárias
+[Tt]emp/
+*.tmp
+
+# Outros
+node_modules/
+/nul

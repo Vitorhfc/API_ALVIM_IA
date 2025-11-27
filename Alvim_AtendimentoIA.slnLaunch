@@ -1,0 +1,17 @@
+[
+  {
+    "Name": "BuildCompleto",
+    "Projects": [
+      {
+        "Path": "ADM\\ADM_Api.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      },
+      {
+        "Path": "Cliente\\Cliente_Api.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      }
+    ]
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet build:*)",
+      "Bash(Select-String -Pattern \"erro|error|Build FAILED\" -Context 2,2)",
+      "Bash(powershell.exe -Command \"dotnet build 2>&1 | Select-String -Pattern ''erro|error|Build FAILED'' -Context 2,2\")",
+      "Bash(powershell.exe -Command \"Get-Command dotnet -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source\")",
+      "Bash(powershell.exe -Command:*)",
+      "Bash(Select-String -Pattern \"erro|error|Build FAILED|succeeded\" -Context 2,2)",
+      "Bash(findstr:*)",
+      "Bash(dir:*)",
+      "Bash(Select-String -Pattern \"Build succeeded|Build FAILED|error\" -Context 0,2)",
+      "Bash(nul)",
+      "Bash(Select-String -Pattern \"erro|error|Build FAILED|succeeded\" -Context 0,2)",
+      "Bash(dotnet restore:*)",
+      "Bash(dotnet clean:*)",
+      "Bash(Select-String -Pattern \"erro|error|Build FAILED|Build succeeded\" -Context 0,2)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
