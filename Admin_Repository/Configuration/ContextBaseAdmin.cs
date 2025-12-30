@@ -47,6 +47,9 @@ namespace Admin_Repository.Configuration
         public IMongoCollection<LogWaha> LogWahaCollection =>
             _mongoDatabase.GetCollection<LogWaha>("LogWaha");
 
+        public IMongoCollection<MenuConfiguracao> MenuConfiguracaoCollection =>
+            _mongoDatabase.GetCollection<MenuConfiguracao>("MenuConfiguracao");
+
         public IMongoDatabase Database => _mongoDatabase;
 
         public IMongoCollection<T> GetCollection<T>(string collectionName) =>
@@ -61,6 +64,7 @@ namespace Admin_Repository.Configuration
             builder.Entity<UsuarioEmpresa>().ToCollection("UsuarioEmpresa");
             builder.Entity<LogADM>().ToCollection("LogADM");
             builder.Entity<LogWaha>().ToCollection("LogWaha");
+            builder.Entity<MenuConfiguracao>().ToCollection("MenuConfiguracao");
         }
     }
 }

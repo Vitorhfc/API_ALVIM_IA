@@ -7,14 +7,15 @@ using System.Security.Claims;
 namespace Shared.Hubs
 {
     /// <summary>
-    /// Hub SignalR para notificações em tempo real de WhatsApp (WAHA)
+    /// Hub SignalR para notificações em tempo real de WhatsApp por empresa
+    /// Cada conexão é automaticamente adicionada ao grupo da sua empresa
     /// </summary>
     [Authorize]
     public class WhatsAppHub : Hub
     {
-        // Rastreamento de sessões e conexões
-        private static readonly ConcurrentDictionary<string, HashSet<string>> _sessaoConexoes = new();
-        private static readonly ConcurrentDictionary<string, string> _conexaoSessao = new();
+        // Rastreamento de empresas e conexões
+        private static readonly ConcurrentDictionary<string, HashSet<string>> _empresaConexoes = new();
+        private static readonly ConcurrentDictionary<string, string> _conexaoEmpresa = new();
 
         private readonly ILogger<WhatsAppHub> _logger;
 
@@ -24,86 +25,8 @@ namespace Shared.Hubs
         }
 
         /// <summary>
-        /// Conecta o cliente a um grupo específico de sessão WhatsApp
-        /// Isso permite enviar notificações apenas para clientes interessados em uma sessão específica
-        /// </summary>
-        /// <param name="sessionName">Nome da sessão WhatsApp (ex: Alvim_123_10112025)</param>
-        public async Task JoinGroup(string sessionName)
-        {
-            if (string.IsNullOrWhiteSpace(sessionName))
-            {
-                _logger.LogWarning("Tentativa de JoinGroup com sessionName vazio - ConnectionId: {ConnectionId}",
-                    Context.ConnectionId);
-                return;
-            }
-
-            var connectionId = Context.ConnectionId;
-            var empresaId = ObterEmpresaId();
-
-            await Groups.AddToGroupAsync(connectionId, sessionName);
-
-            // Rastreia a conexão
-            _sessaoConexoes.AddOrUpdate(
-                sessionName,
-                new HashSet<string> { connectionId },
-                (key, existingSet) =>
-                {
-                    lock (existingSet)
-                    {
-                        existingSet.Add(connectionId);
-                    }
-                    return existingSet;
-                }
-            );
-
-            _conexaoSessao[connectionId] = sessionName;
-
-            _logger.LogInformation(
-                "Cliente inscrito no grupo WhatsApp - ConnectionId: {ConnectionId}, SessionName: {SessionName}, EmpresaId: {EmpresaId}",
-                connectionId, sessionName, empresaId
-            );
-        }
-
-        /// <summary>
-        /// Remove o cliente de um grupo de sessão
-        /// </summary>
-        /// <param name="sessionName">Nome da sessão WhatsApp</param>
-        public async Task LeaveGroup(string sessionName)
-        {
-            if (string.IsNullOrWhiteSpace(sessionName))
-            {
-                _logger.LogWarning("Tentativa de LeaveGroup com sessionName vazio - ConnectionId: {ConnectionId}",
-                    Context.ConnectionId);
-                return;
-            }
-
-            var connectionId = Context.ConnectionId;
-
-            await Groups.RemoveFromGroupAsync(connectionId, sessionName);
-
-            // Remove do rastreamento
-            if (_sessaoConexoes.TryGetValue(sessionName, out var conexoes))
-            {
-                lock (conexoes)
-                {
-                    conexoes.Remove(connectionId);
-                    if (conexoes.Count == 0)
-                    {
-                        _sessaoConexoes.TryRemove(sessionName, out _);
-                    }
-                }
-            }
-
-            _conexaoSessao.TryRemove(connectionId, out _);
-
-            _logger.LogInformation(
-                "Cliente removido do grupo WhatsApp - ConnectionId: {ConnectionId}, SessionName: {SessionName}",
-                connectionId, sessionName
-            );
-        }
-
-        /// <summary>
         /// Chamado quando um cliente se conecta ao Hub
+        /// Automaticamente adiciona a conexão ao grupo da empresa
         /// </summary>
         public override async Task OnConnectedAsync()
         {
@@ -119,6 +42,25 @@ namespace Shared.Hubs
                     Context.Abort();
                     return;
                 }
+
+                // Adiciona automaticamente ao grupo da empresa
+                await Groups.AddToGroupAsync(connectionId, $"empresa_{empresaId}");
+
+                // Rastreia a conexão
+                _empresaConexoes.AddOrUpdate(
+                    empresaId,
+                    new HashSet<string> { connectionId },
+                    (key, existingSet) =>
+                    {
+                        lock (existingSet)
+                        {
+                            existingSet.Add(connectionId);
+                        }
+                        return existingSet;
+                    }
+                );
+
+                _conexaoEmpresa[connectionId] = empresaId;
 
                 _logger.LogInformation(
                     "Cliente conectado ao WhatsApp Hub - ConnectionId: {ConnectionId}, EmpresaId: {EmpresaId}, UsuarioId: {UsuarioId}",
@@ -154,10 +96,10 @@ namespace Shared.Hubs
             {
                 var connectionId = Context.ConnectionId;
 
-                // Remove a conexão de todos os grupos
-                if (_conexaoSessao.TryRemove(connectionId, out var sessionName))
+                // Remove a conexão do grupo da empresa
+                if (_conexaoEmpresa.TryRemove(connectionId, out var empresaId))
                 {
-                    if (_sessaoConexoes.TryGetValue(sessionName, out var conexoes))
+                    if (_empresaConexoes.TryGetValue(empresaId, out var conexoes))
                     {
                         lock (conexoes)
                         {
@@ -166,25 +108,25 @@ namespace Shared.Hubs
                             // Remove o grupo se não houver mais conexões
                             if (conexoes.Count == 0)
                             {
-                                _sessaoConexoes.TryRemove(sessionName, out _);
+                                _empresaConexoes.TryRemove(empresaId, out _);
                             }
                         }
                     }
 
-                    await Groups.RemoveFromGroupAsync(connectionId, sessionName);
+                    await Groups.RemoveFromGroupAsync(connectionId, $"empresa_{empresaId}");
                 }
 
                 if (exception != null)
                 {
                     _logger.LogWarning(exception,
-                        "Cliente desconectado com erro do WhatsApp Hub - ConnectionId: {ConnectionId}, SessionName: {SessionName}",
-                        connectionId, sessionName);
+                        "Cliente desconectado com erro do WhatsApp Hub - ConnectionId: {ConnectionId}, EmpresaId: {EmpresaId}",
+                        connectionId, empresaId);
                 }
                 else
                 {
                     _logger.LogInformation(
-                        "Cliente desconectado do WhatsApp Hub - ConnectionId: {ConnectionId}, SessionName: {SessionName}",
-                        connectionId, sessionName);
+                        "Cliente desconectado do WhatsApp Hub - ConnectionId: {ConnectionId}, EmpresaId: {EmpresaId}",
+                        connectionId, empresaId);
                 }
 
                 await base.OnDisconnectedAsync(exception);
@@ -226,11 +168,11 @@ namespace Shared.Hubs
         }
 
         /// <summary>
-        /// Obtém o número de conexões ativas para uma sessão
+        /// Obtém o número de conexões ativas para uma empresa
         /// </summary>
-        public static int ObterNumeroConexoesPorSessao(string sessionName)
+        public static int ObterNumeroConexoesPorEmpresa(string empresaId)
         {
-            if (_sessaoConexoes.TryGetValue(sessionName, out var conexoes))
+            if (_empresaConexoes.TryGetValue(empresaId, out var conexoes))
             {
                 lock (conexoes)
                 {
@@ -241,11 +183,19 @@ namespace Shared.Hubs
         }
 
         /// <summary>
-        /// Verifica se há conexões ativas para uma sessão
+        /// Verifica se há conexões ativas para uma empresa
         /// </summary>
-        public static bool TemConexoesAtivas(string sessionName)
+        public static bool TemConexoesAtivas(string empresaId)
         {
-            return _sessaoConexoes.ContainsKey(sessionName) && ObterNumeroConexoesPorSessao(sessionName) > 0;
+            return _empresaConexoes.ContainsKey(empresaId) && ObterNumeroConexoesPorEmpresa(empresaId) > 0;
+        }
+
+        /// <summary>
+        /// Obtém o nome do grupo SignalR para uma empresa
+        /// </summary>
+        public static string ObterNomeGrupoEmpresa(string empresaId)
+        {
+            return $"empresa_{empresaId}";
         }
     }
 }

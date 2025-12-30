@@ -1,0 +1,82 @@
+{
+  "empresaId": null,
+  "menus": [
+    {
+      "icone": "dashboard",
+      "label": "Dashboard",
+      "route": "/dashboard",
+      "disabled": false,
+      "ordem": 1
+    },
+    {
+      "icone": "chat",
+      "label": "Conversas",
+      "route": "/conversas",
+      "disabled": false,
+      "ordem": 2
+    },
+    {
+      "icone": "event",
+      "label": "Agendamentos",
+      "route": "/agendamentos",
+      "disabled": true,
+      "ordem": 3
+    },
+    {
+      "icone": "people",
+      "label": "Funcionários",
+      "route": "/funcionarios",
+      "disabled": true,
+      "ordem": 4
+    },
+    {
+      "icone": "analytics",
+      "label": "Análises",
+      "route": "/analises",
+      "disabled": true,
+      "ordem": 5
+    },
+    {
+      "icone": "description",
+      "label": "Templates",
+      "route": "/templates",
+      "disabled": true,
+      "ordem": 6
+    },
+    {
+      "icone": "menu_book",
+      "label": "Base de Conhecimento",
+      "route": "/base-conhecimento",
+      "disabled": false,
+      "ordem": 7
+    },
+    {
+      "icone": "phone",
+      "label": "WhatsApp",
+      "route": "/whatsapp-config",
+      "disabled": false,
+      "ordem": 8
+    },
+    {
+      "icone": "phone_missed",
+      "label": "Log WhatsApp",
+      "route": "/LogWhatsapp",
+      "disabled": true,
+      "ordem": 9
+    },
+    {
+      "icone": "receipt_long",
+      "label": "Logs Client",
+      "route": "/LogsClient",
+      "disabled": true,
+      "ordem": 10
+    },
+    {
+      "icone": "settings",
+      "label": "Configurações",
+      "route": "/configuracoes",
+      "disabled": true,
+      "ordem": 11
+    }
+  ]
+}

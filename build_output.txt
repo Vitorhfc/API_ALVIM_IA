@@ -1,0 +1,28 @@
+  Determinando os projetos a serem restaurados...
+C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Shared\Shared.csproj : warning NU1903: O pacote 'RestSharp' 106.11.7 tem uma alta vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-9pq7-rcxv-47vq [C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Alvim_AtendimentoIA.sln]
+C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Shared\Shared.csproj : warning NU1903: O pacote 'SixLabors.ImageSharp' 3.1.6 tem uma alta vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-2cmq-823j-5qj8 [C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Alvim_AtendimentoIA.sln]
+C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Shared\Shared.csproj : warning NU1902: O pacote 'SixLabors.ImageSharp' 3.1.6 tem uma moderado vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-rxmq-m78w-7wmc [C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Alvim_AtendimentoIA.sln]
+  Todos os projetos estão atualizados para restauração.
+C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Shared\Shared.csproj : warning NU1903: O pacote 'RestSharp' 106.11.7 tem uma alta vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-9pq7-rcxv-47vq
+C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Shared\Shared.csproj : warning NU1903: O pacote 'SixLabors.ImageSharp' 3.1.6 tem uma alta vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-2cmq-823j-5qj8
+C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Shared\Shared.csproj : warning NU1902: O pacote 'SixLabors.ImageSharp' 3.1.6 tem uma moderado vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-rxmq-m78w-7wmc
+  Shared -> C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Shared\bin\Debug\net8.0\Shared.dll
+  Admin_Repository -> C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Admin_Repository\bin\Debug\net8.0\Admin_Repository.dll
+  Admin_Service -> C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Admin_Service\bin\Debug\net8.0\Admin_Service.dll
+  Client_Repository -> C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Client_Repository\bin\Debug\net8.0\Client_Repository.dll
+  ADM_Api -> C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\ADM\bin\Debug\net8.0\ADM_Api.dll
+  Client_Service -> C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Client_Service\bin\Debug\net8.0\Client_Service.dll
+  Cliente_Api -> C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Cliente\bin\Debug\net8.0\Cliente_Api.dll
+
+Compilação com êxito.
+
+C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Shared\Shared.csproj : warning NU1903: O pacote 'RestSharp' 106.11.7 tem uma alta vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-9pq7-rcxv-47vq [C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Alvim_AtendimentoIA.sln]
+C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Shared\Shared.csproj : warning NU1903: O pacote 'SixLabors.ImageSharp' 3.1.6 tem uma alta vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-2cmq-823j-5qj8 [C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Alvim_AtendimentoIA.sln]
+C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Shared\Shared.csproj : warning NU1902: O pacote 'SixLabors.ImageSharp' 3.1.6 tem uma moderado vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-rxmq-m78w-7wmc [C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Alvim_AtendimentoIA.sln]
+C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Shared\Shared.csproj : warning NU1903: O pacote 'RestSharp' 106.11.7 tem uma alta vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-9pq7-rcxv-47vq
+C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Shared\Shared.csproj : warning NU1903: O pacote 'SixLabors.ImageSharp' 3.1.6 tem uma alta vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-2cmq-823j-5qj8
+C:\Users\faso\source\repos\Alvim - Atendimento ao cliente\API_ALVIM_IA\Shared\Shared.csproj : warning NU1902: O pacote 'SixLabors.ImageSharp' 3.1.6 tem uma moderado vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-rxmq-m78w-7wmc
+    6 Aviso(s)
+    0 Erro(s)
+
+Tempo Decorrido 00:00:01.17

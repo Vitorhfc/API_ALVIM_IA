@@ -1,0 +1,209 @@
+### API de Configuração de Menus
+### Exemplos de chamadas HTTP para popular o banco de dados
+
+@baseUrl = https://localhost:5001/api/MenuConfiguracao
+@token = SEU_TOKEN_JWT_AQUI
+
+### 1. Criar Menu - Dashboard
+POST {{baseUrl}}/menu
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "icone": "dashboard",
+  "label": "Dashboard",
+  "route": "/dashboard",
+  "disabled": false,
+  "ordem": 1,
+  "empresaId": null
+}
+
+### 2. Criar Menu - Conversas
+POST {{baseUrl}}/menu
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "icone": "chat",
+  "label": "Conversas",
+  "route": "/conversas",
+  "disabled": false,
+  "ordem": 2,
+  "empresaId": null
+}
+
+### 3. Criar Menu - Agendamentos (desabilitado)
+POST {{baseUrl}}/menu
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "icone": "event",
+  "label": "Agendamentos",
+  "route": "/agendamentos",
+  "disabled": true,
+  "ordem": 3,
+  "empresaId": null
+}
+
+### 4. Criar Menu - Funcionários (desabilitado)
+POST {{baseUrl}}/menu
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "icone": "people",
+  "label": "Funcionários",
+  "route": "/funcionarios",
+  "disabled": true,
+  "ordem": 4,
+  "empresaId": null
+}
+
+### 5. Criar Menu - Análises (desabilitado)
+POST {{baseUrl}}/menu
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "icone": "analytics",
+  "label": "Análises",
+  "route": "/analises",
+  "disabled": true,
+  "ordem": 5,
+  "empresaId": null
+}
+
+### 6. Criar Menu - Templates (desabilitado)
+POST {{baseUrl}}/menu
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "icone": "description",
+  "label": "Templates",
+  "route": "/templates",
+  "disabled": true,
+  "ordem": 6,
+  "empresaId": null
+}
+
+### 7. Criar Menu - Base de Conhecimento
+POST {{baseUrl}}/menu
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "icone": "menu_book",
+  "label": "Base de Conhecimento",
+  "route": "/base-conhecimento",
+  "disabled": false,
+  "ordem": 7,
+  "empresaId": null
+}
+
+### 8. Criar Menu - WhatsApp
+POST {{baseUrl}}/menu
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "icone": "phone",
+  "label": "WhatsApp",
+  "route": "/whatsapp-config",
+  "disabled": false,
+  "ordem": 8,
+  "empresaId": null
+}
+
+### 9. Criar Menu - Log WhatsApp (desabilitado)
+POST {{baseUrl}}/menu
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "icone": "phone_missed",
+  "label": "Log WhatsApp",
+  "route": "/LogWhatsapp",
+  "disabled": true,
+  "ordem": 9,
+  "empresaId": null
+}
+
+### 10. Criar Menu - Logs Client (desabilitado)
+POST {{baseUrl}}/menu
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "icone": "receipt_long",
+  "label": "Logs Client",
+  "route": "/LogsClient",
+  "disabled": true,
+  "ordem": 10,
+  "empresaId": null
+}
+
+### 11. Criar Menu - Configurações (desabilitado)
+POST {{baseUrl}}/menu
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "icone": "settings",
+  "label": "Configurações",
+  "route": "/configuracoes",
+  "disabled": true,
+  "ordem": 11,
+  "empresaId": null
+}
+
+### Buscar todos os menus
+GET {{baseUrl}}/menu/todos
+Authorization: Bearer {{token}}
+
+### Buscar todos os menus de uma empresa específica
+GET {{baseUrl}}/menu/todos?empresaId=ID_DA_EMPRESA
+Authorization: Bearer {{token}}
+
+### Buscar menu por ID
+GET {{baseUrl}}/menu/MENU_ID_AQUI
+Authorization: Bearer {{token}}
+
+### Atualizar menu (exemplo: habilitar Agendamentos)
+PUT {{baseUrl}}/menu/MENU_ID_AQUI
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "icone": "event",
+  "label": "Agendamentos",
+  "route": "/agendamentos",
+  "disabled": false,
+  "ordem": 3,
+  "empresaId": null
+}
+
+### Remover menu
+DELETE {{baseUrl}}/menu/MENU_ID_AQUI
+Authorization: Bearer {{token}}
+
+### Reordenar menus
+POST {{baseUrl}}/menu/reordenar
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+[
+  {
+    "id": "MENU_ID_1",
+    "ordem": 1
+  },
+  {
+    "id": "MENU_ID_2",
+    "ordem": 2
+  },
+  {
+    "id": "MENU_ID_3",
+    "ordem": 3
+  }
+]

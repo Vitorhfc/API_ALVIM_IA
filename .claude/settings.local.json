@@ -14,7 +14,8 @@
       "Bash(Select-String -Pattern \"erro|error|Build FAILED|succeeded\" -Context 0,2)",
       "Bash(dotnet restore:*)",
       "Bash(dotnet clean:*)",
-      "Bash(Select-String -Pattern \"erro|error|Build FAILED|Build succeeded\" -Context 0,2)"
+      "Bash(Select-String -Pattern \"erro|error|Build FAILED|Build succeeded\" -Context 0,2)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

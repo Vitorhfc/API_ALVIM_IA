@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Shared.Classes.Results;
+using Shared.Services.Interface;
 
 namespace Client_Service.Service
 {
@@ -17,6 +18,7 @@ namespace Client_Service.Service
         private readonly IWebhookAuthCacheService _authCache;
         private readonly ILogClientService _logClient;
         private readonly IAdminLogService _adminLog;
+        private readonly IWhatsAppNotificationService _notificationService;
         private readonly ILogger<WebhookOrchestratorService> _logger;
 
         public WebhookOrchestratorService(
@@ -24,12 +26,14 @@ namespace Client_Service.Service
             IWebhookAuthCacheService authCache,
             ILogClientService logClient,
             IAdminLogService adminLog,
+            IWhatsAppNotificationService notificationService,
             ILogger<WebhookOrchestratorService> logger)
         {
             _webhookProcessor = webhookProcessor;
             _authCache = authCache;
             _logClient = logClient;
             _adminLog = adminLog;
+            _notificationService = notificationService;
             _logger = logger;
         }
 
@@ -102,6 +106,22 @@ namespace Client_Service.Service
                 {
                     var sucesso = new { mensagem = "Webhook processado com sucesso", idProcessamento = resultado.IdProcessamento };
                     await RegistrarRespostaAsync(idLog, "SAIDA_SUCESSO", sucesso, empresaId, httpContext);
+
+                    // === ETAPA 8: NOTIFICAÇÃO SIGNALR ===
+                    try
+                    {
+                        await _notificationService.NotificarNovaMensagemAsync(
+                            empresaId,
+                            validacao.WebhookRequest!.@event ?? "unknown",
+                            validacao.WebhookRequest!,
+                            cancellationToken
+                        );
+                    }
+                    catch (Exception notifEx)
+                    {
+                        _logger.LogWarning(notifEx, "Falha ao enviar notificação SignalR - IdLog: {IdLog}, EmpresaId: {EmpresaId}", idLog, empresaId);
+                    }
+
                     return WebhookOrchestrationResult.Ok("SAIDA_SUCESSO", sucesso);
                 }
                 else

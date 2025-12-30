@@ -18,6 +18,7 @@ namespace Client.Controllers
         private readonly IClienteEmpresaMapService _clienteEmpresaMapService;
         private readonly Client_Repository.Configuration.Contexto.Interface.IContextoMultiTenantService _contextoMultiTenant;
         private readonly Client_Repository.Repositorio.Interface.IMensagemRepositorio _mensagemRepositorio;
+        private readonly Shared.Services.Interface.IWhatsAppNotificationService _whatsAppNotificationService;
         #endregion
 
         #region Construtor
@@ -28,7 +29,8 @@ namespace Client.Controllers
             ILogger<ClienteController> logger,
             IClienteEmpresaMapService clienteEmpresaMapService,
             Client_Repository.Configuration.Contexto.Interface.IContextoMultiTenantService contextoMultiTenant,
-            Client_Repository.Repositorio.Interface.IMensagemRepositorio mensagemRepositorio)
+            Client_Repository.Repositorio.Interface.IMensagemRepositorio mensagemRepositorio,
+            Shared.Services.Interface.IWhatsAppNotificationService whatsAppNotificationService)
             : base(logClientService, logger)
         {
             _clienteService = clienteService;
@@ -37,6 +39,7 @@ namespace Client.Controllers
             _clienteEmpresaMapService = clienteEmpresaMapService;
             _contextoMultiTenant = contextoMultiTenant;
             _mensagemRepositorio = mensagemRepositorio;
+            _whatsAppNotificationService = whatsAppNotificationService;
         }
 
         #endregion
@@ -285,6 +288,15 @@ namespace Client.Controllers
                     SerializarParaLog(clienteCriado),
                     $"Cliente {cliente.Nome} criado com sucesso");
 
+                // Notificar via SignalR sobre novo cliente
+                if (!string.IsNullOrWhiteSpace(empresaId) && clienteCriado != null)
+                {
+                    await _whatsAppNotificationService.NotificarClienteAtualizadoAsync(
+                        empresaId,
+                        "criado",
+                        clienteCriado);
+                }
+
                 return Criado($"/api/cliente/{clienteCriado.Id}", clienteCriado, "Cliente criado com sucesso");
             }
             catch (Exception ex)
@@ -338,6 +350,15 @@ namespace Client.Controllers
                     SerializarParaLog(clienteAtualizado),
                     $"Cliente {cliente.Nome} atualizado com sucesso");
 
+                // Notificar via SignalR sobre atualização do cliente
+                if (!string.IsNullOrWhiteSpace(empresaId) && clienteAtualizado != null)
+                {
+                    await _whatsAppNotificationService.NotificarClienteAtualizadoAsync(
+                        empresaId,
+                        "atualizado",
+                        clienteAtualizado);
+                }
+
                 return Sucesso(clienteAtualizado, "Cliente atualizado com sucesso");
             }
             catch (Exception ex)
@@ -369,6 +390,16 @@ namespace Client.Controllers
                     $"Cliente {cliente.Nome} {(statusAnterior ? "ativo" : "inativo")}",
                     $"Cliente {cliente.Nome} {(ativo ? "ativo" : "inativo")}",
                     $"Cliente {cliente.Nome} foi {mensagem}");
+
+                // Notificar via SignalR sobre alteração de status
+                var empresaId = _contextoMultiTenant.ObterIdEmpresaAtual();
+                if (!string.IsNullOrWhiteSpace(empresaId))
+                {
+                    await _whatsAppNotificationService.NotificarClienteAtualizadoAsync(
+                        empresaId,
+                        "status_alterado",
+                        cliente);
+                }
 
                 return Sucesso(cliente, $"Cliente {mensagem} com sucesso");
             }
@@ -415,6 +446,16 @@ namespace Client.Controllers
                 _logger.LogInformation("Modo de resposta por responsável {Acao} para cliente {ClienteId} - {ClienteNome}",
                     acao, cliente.Id, cliente.Nome);
 
+                // Notificar via SignalR sobre alteração de modo de resposta
+                var empresaId = _contextoMultiTenant.ObterIdEmpresaAtual();
+                if (!string.IsNullOrWhiteSpace(empresaId))
+                {
+                    await _whatsAppNotificationService.NotificarClienteAtualizadoAsync(
+                        empresaId,
+                        "resposta_responsavel_alterada",
+                        cliente);
+                }
+
                 return Sucesso(cliente, $"Modo de resposta por responsável {mensagem} com sucesso");
             }
             catch (Exception ex)
@@ -442,6 +483,16 @@ namespace Client.Controllers
                     SerializarParaLog(cliente),
                     "Cliente removido",
                     $"Cliente {cliente.Nome} removido permanentemente");
+
+                // Notificar via SignalR sobre remoção do cliente
+                var empresaId = _contextoMultiTenant.ObterIdEmpresaAtual();
+                if (!string.IsNullOrWhiteSpace(empresaId))
+                {
+                    await _whatsAppNotificationService.NotificarClienteAtualizadoAsync(
+                        empresaId,
+                        "removido",
+                        new { id = cliente.Id, nome = cliente.Nome });
+                }
 
                 return Sucesso(null, "Cliente removido com sucesso");
             }

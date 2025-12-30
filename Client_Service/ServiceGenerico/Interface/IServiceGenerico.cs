@@ -21,5 +21,6 @@ namespace Client_Service.ServiceGenerico.Interface
         Task<TEntidade?> EditarAsync(TEntidade objeto);
         Task<List<TEntidade>> EditarArrayAsync(List<TEntidade> array);
         Task ExcluirAsync(TEntidade @object);
+        Task ExcluirPorIdAsync(string id);
     }
 }

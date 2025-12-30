@@ -194,6 +194,25 @@ namespace Client_Service.ServiceGenerico
             }
         }
 
+        public virtual async Task ExcluirPorIdAsync(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    throw new ArgumentException("ID não pode ser nulo ou vazio", nameof(id));
+
+                var entidade = await _repositorio.BuscarPorIdAsync(id);
+                if (entidade == null)
+                    throw new InvalidOperationException($"Entidade com ID {id} não encontrada");
+
+                await _repositorio.ExcluirAsync(entidade);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"Erro no service ao excluir por ID: {ex.Message}", ex);
+            }
+        }
+
         protected virtual Task ValidarEntidade(TEntidade entidade)
         {
             return Task.CompletedTask;

@@ -108,6 +108,16 @@ namespace Admin_Repository.Configuration
                     cm.SetIgnoreExtraElements(true);
                 });
             }
+
+            // MenuConfiguracao
+            if (!BsonClassMap.IsClassMapRegistered(typeof(MenuConfiguracao)))
+            {
+                BsonClassMap.RegisterClassMap<MenuConfiguracao>(cm =>
+                {
+                    cm.AutoMap();
+                    cm.SetIgnoreExtraElements(true);
+                });
+            }
         }
     }
 }
